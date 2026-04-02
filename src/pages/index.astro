@@ -13,9 +13,15 @@ import "katex/dist/katex-swap.css";
 
 import { Content, frontmatter } from "../paper.mdx";
 
+interface Logo {
+  src: string;
+  alt: string;
+}
+
 interface Frontmatter {
   title: string;
   authors: Author[];
+  logos?: Logo[];
   conference?: string;
   notes?: Note[];
   links?: Link[];
@@ -28,6 +34,7 @@ interface Frontmatter {
 const {
   title,
   authors,
+  logos,
   conference,
   notes,
   links,
@@ -64,12 +71,19 @@ const prefix = baseUrl.endsWith("/") ? baseUrl : baseUrl + "/";
     <title>{title}</title>
   </head>
   <body
-    class="prose prose-lg prose-zinc dark:prose-invert prose-a:text-blue-500 prose-a:dark:text-blue-300 prose-a:no-underline prose-a:hover:underline prose-a:font-normal prose-code:bg-zinc-200 prose-code:dark:bg-zinc-800 prose-code:text-zinc-800 prose-code:dark:text-zinc-200 prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded prose-code:font-medium prose-code:before:content-none prose-code:after:content-none max-w-none pt-16 pb-6 font-(family-name:--font-noto-sans)"
+    class="prose prose-lg prose-zinc dark:prose-invert prose-a:text-blue-500 prose-a:dark:text-blue-300 prose-a:no-underline prose-a:hover:underline prose-a:font-normal prose-code:bg-zinc-200 prose-code:dark:bg-zinc-800 prose-code:text-zinc-800 prose-code:dark:text-zinc-200 prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded prose-code:font-medium prose-code:before:content-none prose-code:after:content-none max-w-none pt-16 pb-6 font-(family-name:--font-noto-sans) flex flex-col items-center w-full *:px-6 *:max-w-240 *:w-full"
   >
     <header class="mx-auto mb-12 max-w-[50rem] px-6 text-center">
       <h1 class="text-5xl font-medium">{title}</h1>
       <div class="flex flex-col items-center gap-6">
         <Authors authors={authors} />
+        <!-- {logos && logos.length > 0 && (
+          <div class="flex justify-center items-center gap-6 flex-wrap">
+            {logos.map((logo) => (
+              <img src={prefix + logo.src} alt={logo.alt} class="h-40 object-contain not-prose" />
+            ))}
+          </div>
+        )} -->
         {conference && <div>{conference}</div>}
         {notes && <Notes notes={notes} />}
         {links && <Links links={links} />}
@@ -78,12 +92,20 @@ const prefix = baseUrl.endsWith("/") ? baseUrl : baseUrl + "/";
     <main>
       <Content components={{ table: Table }} />
     </main>
-    <footer class="mx-auto max-w-[50rem] px-6 text-center">
-      <p class="prose-sm text-center">
-        Built with <a
-          href="https://research-template.roman.technology"
-          rel="nofollow">Roman Hauksson-Neill's project page template</a
-        >
+    <footer class="m-auto">
+      <p class="text-zinc-500 text-sm">
+        This page was built using <a
+          href="https://github.com/RomanHauksson/academic-project-astro-template"
+          >Roman Hauksson's academic project page template</a
+        >, which was adapted from <a
+          href="https://github.com/eliahuhorwitz/Academic-project-page-template"
+          >Eliahu Horwitz's template</a
+        >, which was adapted from <a href="https://nerfies.github.io/"
+          >Keunhong Park's project page for <i>Nerfies</i></a
+        >. It is licensed under a <a
+          href="http://creativecommons.org/licenses/by-sa/4.0/"
+          >Creative Commons Attribution-ShareAlike 4.0 International License</a
+        >.
       </p>
     </footer>
   </body>

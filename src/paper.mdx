@@ -1,43 +1,45 @@
 ---
-title: Academic Project Page Template
+title: Backstepping Reach-avoid Controller Synthesis for Multi-input Multi-output Systems with Mixed Relative Degrees
 authors:
-  - name: Roman Hauksson
-    url: https://roman.technology
-    institution: University of Texas at Dallas
-    notes: ["*", †]
-  - name: Author Two
-    institution: Institution Two
-    notes: ["*", †]
-  - name: Author Three
-    institution: Institution Three
+  - name: Jianqiang Ding
+    url: https://jianqiangding.github.io/
+    institution: Aalto University
+    notes: [†]
+  - name: Dingran Yuan
+    institution: Aalto University
+    notes: []
+  - name: Shankar A. Deka
+    institution: Aalto University
     notes: ["*"]
-  - name: Author Four
-    institution: Institution Four
-conference: Conference Name
+
+conference: 2025 IEEE 64th Conference on Decision and Control (CDC)
 notes:
-  - symbol: "*"
-    text: author note one
   - symbol: †
-    text: author note two
+    text: Corresponding author
+  - symbol: "*"
+    text: Member, IEEE
 links:
   - name: Paper
-    url: https://github.com/RomanHauksson/academic-project-astro-template
+    url: https://ieeexplore.ieee.org/document/11312796
     icon: ri:file-pdf-2-line
   - name: Code
-    url: https://github.com/RomanHauksson/academic-project-astro-template
+    url: https://github.com/Aalto-Nonlinear-Systems-and-Control/reach_avoid_backstepping
     icon: ri:github-line
   - name: arXiv
-    url: https://github.com/RomanHauksson/academic-project-astro-template
+    url: https://arxiv.org/abs/2505.03612
     icon: academicons:arxiv
-  - name: Slides
-    url: https://github.com/RomanHauksson/academic-project-astro-template
-    icon: ri:slideshow-2-line
 
 # The color theme of the page. Defaults to "device" (the preference set in the user's brower or operating system). Setting this to "light" or "dark" will override the user's preference. This is useful if your figures only look good in one theme.
 theme: device
 
 # This is the icon that appears in the user's browser tab. To customize, change the favicon.svg file in /public/, or add your own file to /public/ and change the filename here.
-favicon: favicon.svg
+favicon: aalto_logo.png
+
+logos:
+  - src: aalto_logo.png
+    alt: Aalto University
+  - src: aalto_logo.png
+    alt: Aalto University
 
 # These keys are optional. If a link to your project page is in a Google search result, text message, or social media post, it will often appear as a "link preview card" based on its title, description, favicon, and thumbnail. After you publish your page, you can double check that these previews look right using [this tool](https://linkpreview.xyz/)
 description: Simple project page template for your research paper, built with Astro and Tailwind
@@ -59,21 +61,182 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/starwind/
 import { Comparison } from "./components/Comparison.tsx";
 
 import outside from "./assets/outside.mp4";
+import ex10 from "./assets/ex10.png";
+import ex11 from "./assets/ex11.png";
+import ex20 from "./assets/ex20.png";
+import ex21 from "./assets/ex21.png";
 import dogsDiffc from "./assets/dogs-diffc.png"
 import dogsTrue from "./assets/dogs-true.png"
 import dogsMsillm from "@/assets/dogs-msillm.jpg"
 
-<Video src={outside} />
+{/* <Video src={outside} /> */}
 
 <HighlightedSection>
 
 ## Abstract
 
-This is a template you can use to create a professional project page for your research paper. [See the code for the template and instructions on how to use it yourself on GitHub](https://github.com/RomanHauksson/academic-project-astro-template). It's made with the [Astro web framework](https://astro.build/) and styled with [Tailwind](https://tailwindcss.com/). You write the content in [MDX](https://mdxjs.com/), which enables markdown formatting like **bold**, _italics_, and ~strikethrough~, as well as custom components like <SmallCaps>small caps.</SmallCaps>
+Designing controllers with provable formal guarantees has become an urgent requirement for cyber-physical systems in safety-critical scenarios. 
+In this paper, by leveraging feedback linearization and backstepping techniques, we present a novel framework for constructing **provable 
+reach-avoid** formal certificates tailored to multi-input multi-output systems. Based on this, we developed a systematic synthesis approach for 
+controllers with reach-avoid guarantees, which ensures that the outputs of the system eventually enter the predefined target set while staying 
+within the required safe set. Finally, we validate our method in numerical simulations.
+
+{/* This is a template you can use to create a professional project page for your research paper. 
+[See the code for the template and instructions on how to use it yourself on GitHub](https://github.com/RomanHauksson/academic-project-astro-template). 
+It's made with the [Astro web framework](https://astro.build/) and styled with [Tailwind](https://tailwindcss.com/). 
+You write the content in [MDX](https://mdxjs.com/), which enables markdown formatting like **bold**, _italics_, and ~strikethrough~, 
+as well as custom components like <SmallCaps>small caps.</SmallCaps> */}
 
 </HighlightedSection>
 
-## Visuals
+## Experiments
+
+### Dubins Car
+
+Consider the following modified Dubins car model:
+
+$$
+\dot{\bm{x}} =
+\begin{bmatrix}
+\dot{x}_1 \\
+\dot{x}_2 \\
+\dot{\theta} \\
+\dot{v}
+\end{bmatrix}
+=
+\underbrace{\begin{bmatrix}
+v\cos\theta \\
+v\sin\theta \\
+0 \\
+0
+\end{bmatrix}}_{f(\bm{x})}
++
+\underbrace{\begin{bmatrix}
+0 & 0 \\
+0 & 0 \\
+1 & 0 \\
+0 & 1
+\end{bmatrix}}_{g(\bm{x})}
+\underbrace{\begin{bmatrix}
+\omega \\
+a
+\end{bmatrix}}_{\bm{u}}
+$$
+
+with $\bm{x} = [x_1, x_2, \theta, v]^\top \in \mathbb{R}^4$, where $(x_1, x_2)$ denotes the planar location, $\theta$ is the heading angle, and $v$ is the forward velocity. The control input is $\bm{u} = [\omega, a]^\top \in \mathbb{R}^2$, where $\omega$ is angular velocity and $a$ is forward acceleration. The system has vector relative degree $\{2,2\}$ with output $\bm{y} = [y_1, y_2]^\top = [x_1, x_2]^\top$.
+
+$$
+	\text{Safe set: } \mathcal{C} = \left\{ \bm{x} \in \mathbb{R}^2 \mid 2(3.5 - y_2(\bm{x}))^2 - 1.5y_1(\bm{x}) - \left(y_1(\bm{x})^4 + y_2(\bm{x})^4 - 3.5^2\right)^2 > 0 \right\}
+$$
+
+$$
+  \text{Target set: } \mathcal{X}^r = \left\{ \bm{x} \in \mathbb{R}^2 \mid (y_1(\bm{x}) + 0.5)^2 + 4(y_2(\bm{x}) + 1.9)^2 < 1 \right\}
+$$
+
+<TwoColumns>
+  <Picture
+    slot="left"
+    src={ex10}
+    alt="Dubins car example 10 result"
+    class="max-h-none! h-80! w-auto! object-contain"
+  />
+
+  <Picture
+    slot="right"
+    src={ex11}
+    alt="Dubins car example 11 result"
+    class="max-h-none! h-80! w-auto! object-contain"
+  />
+
+  <div slot="caption">
+(a) Simulated trajectories (dashed line from orange dot to green cross) of Dubins car on a racetrack. The grey vector field indicates the function $\bm{k}_1(\bm{y}(\bm{x}))$, from which we construct $\bm{k}(\bm{y}(\bm{x}))$ via backstepping;
+    (b) Set $\mathcal{C}_\Psi$ corresponding to different values of $\mu_l^i$.
+  </div>
+</TwoColumns>
+
+### Two-link Planar Robotic Arm
+
+Consider the following two-link planar robotic arm:
+
+$$
+\dot{\bm{q}} =
+\underbrace{\begin{bmatrix}
+\dot{q}_1 \\
+\dot{q}_2 \\
+-\bm{M}^{-1}(\bm{C}\dot{\bm{q}}+\bm{G})
+\end{bmatrix}}_{f(\bm{q})}
++
+\underbrace{\begin{bmatrix}
+\bm{0}^{2\times2} \\ \bm{M}^{-1}
+\end{bmatrix}}_{g(\bm{q})}
+\underbrace{\begin{bmatrix}
+\tau_1 \\ \tau_2
+\end{bmatrix}}_{\bm{u}}
+$$
+
+with $\bm{q} = [q_1, q_2, \dot{q}_1, \dot{q}_2]^\top \in \mathbb{R}^4$, where $[q_1, q_2]^\top$ are the joint angles and $[\dot{q}_1, \dot{q}_2]^\top$ are the joint velocities. The inertia matrix $\bm{M}$ is defined as
+
+$$
+\bm{M} = \begin{bmatrix} M_{11} & M_{12} \\ M_{21} & M_{22} \end{bmatrix}
+$$
+
+where $M_{11} = I_1 + I_2 + m_2(l_1^2 + l_{c_2}^2 + 2l_1 l_{c_2}\cos(q_2)) + m_1 l_{c_1}^2$, $M_{12} = M_{21} = I_2 + m_2(l_{c_2}^2 + l_1 l_{c_2}\cos(q_2))$, $M_{22} = m_2 l_{c_2}^2 + I_2$.
+
+$$
+\bm{C} = \begin{bmatrix}
+-m_2 l_1 l_{c_2} \sin(q_2)\, \dot{q}_2 & -m_2 l_1 l_{c_2} \sin(q_2)(\dot{q}_1 + \dot{q}_2) \\
+m_2 l_1 l_{c_2} \sin(q_2)\, \dot{q}_1 & 0
+\end{bmatrix}
+$$
+
+is the Coriolis matrix. The gravity vector is
+
+$$
+\bm{G} = \begin{bmatrix}
+(m_1 g l_{c_1} + m_2 g l_1)\cos(q_1) + m_2 g l_{c_2}\cos(q_1 + q_2) \\
+m_2 g l_{c_2}\cos(q_1 + q_2)
+\end{bmatrix}
+$$
+
+$\bm{\tau} \in \mathbb{R}^2$ is the joint torque as control input. The parameters are listed in the table below.
+
+| $m_1$ | $m_2$ | $l_1$ | $l_2$ | $l_{c_1}$ | $l_{c_2}$ | $I_1$ | $I_2$ | $g$ |
+|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
+| 1.0 | 1.0 | 4.0 | 4.0 | 2.0 | 2.0 | 0.02 | 0.02 | 9.81 |
+
+The system has a vector relative degree $\{2,2\}$ with the output $\bm{y} \in \mathbb{R}^2$ as the endpoint position:
+
+$$
+\bm{y} = \begin{bmatrix} y_1 \\ y_2 \end{bmatrix} = \begin{bmatrix}
+l_1\cos(q_1) + l_2\cos(q_1 + q_2) \\
+l_1\sin(q_1) + l_2\sin(q_1 + q_2)
+\end{bmatrix}
+$$
+
+Given safe set $\mathcal{C} = \lbrace \bm{q} \in \mathbb{R}^4 \mid -(4(y_1(\bm{q})-2) - 2y_2(\bm{q})^3)^2 + 0.8y_2(\bm{q})^3 + 10 > 0 \rbrace$ and target set $\mathcal{X}^r = \lbrace \bm{q} \in \mathbb{R}^4 \mid \tfrac{(y_1(\bm{q})-5.8)^2}{1.2^2} + \tfrac{(y_2(\bm{q})-1.9)^2}{0.4^2} - 1 < 0 \rbrace$:
+
+<TwoColumns>
+  <Picture
+    slot="left"
+    src={ex20}
+    alt="Planar robotic arm example 20 result"
+    class="max-h-none! h-80! w-auto! object-contain"
+  />
+
+  <Picture
+    slot="right"
+    src={ex21}
+    alt="Planar robotic arm example 21 result"
+    class="max-h-none! h-80! w-auto! object-contain"
+  />
+
+  <div slot="caption">
+(a) Simulated trajectories (dashed line from orange dot to green cross) of 2-link planar robotic arm. The grey vector field indicates the function $\bm{k}_1(\bm{y}(\bm{x}))$, from which we construct $\bm{k}(\bm{y}(\bm{x}))$ via backstepping;
+    (b) Set $\mathcal{C}_\Psi$ corresponding to different values of $\mu_l^i$.
+  </div>
+</TwoColumns>
+
+{/* ## Visuals
 
 ### Picture
 
@@ -188,21 +351,29 @@ Add simple tables using [GitHub Flavored Markdown syntax](https://docs.github.co
 | BERT-base | 0.89 | 0.87 | 4.5 |
 | RoBERTa-large | 0.92 | 0.91 | 7.2 |
 | DistilBERT | 0.86 | 0.84 | 2.1 |
-| XLNet | 0.90 | 0.89 | 6.8 |
+| XLNet | 0.90 | 0.89 | 6.8 | */}
+
+## Acknowledgement
+
+```
+We acknowledge the financial support of the Finnish Ministry of Education and Culture through the Intelligent Work Machines Doctoral Education Pilot Program (IWM VN/3137/2024-OKM-4).
+```
 
 ## BibTeX citation
 
-Displaying the BibTeX entry for your paper in a code block makes it easy to copy and paste.
+{/* Displaying the BibTeX entry for your paper in a code block makes it easy to copy and paste. */}
 
 ```bibtex
-@misc{roman2024academic,
-  author = "{Roman Hauksson}",
-  title = "Academic Project Page Template",
-  year = "2024",
-  howpublished = "\url{https://research-template.roman.technology}",
+@inproceedings{ding2025backstepping,
+  title={Backstepping Reach-avoid Controller Synthesis for Multi-input Multi-output Systems with Mixed Relative Degrees},
+  author={Ding, Jianqiang and Yuan, Dingran Tintin and Deka, Shankar A},
+  booktitle={2025 IEEE 64th Conference on Decision and Control (CDC)},
+  pages={8222--8227},
+  year={2025},
+  organization={IEEE}
 }
 ```
 
-## Bibliography
+{/* ## Bibliography
 
-[^ref]
+[^ref] */}
