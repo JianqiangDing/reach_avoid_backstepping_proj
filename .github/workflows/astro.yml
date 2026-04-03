@@ -69,8 +69,8 @@ jobs:
       - name: Build with Astro
         run: |
           ${{ steps.detect-package-manager.outputs.runner }} astro build \
-            --site "https://aalto-nonlinear-systems-and-control.github.io" \
-            --base "/reach_avoid_backstepping_proj"
+            --site "https://${{ github.repository_owner }}.github.io" \
+            --base "/${{ github.event.repository.name }}"
         working-directory: ${{ env.BUILD_PATH }}
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
